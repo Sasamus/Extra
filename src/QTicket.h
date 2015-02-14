@@ -9,7 +9,7 @@ class QTicket {
 public:
 
 	QTicket() { }
-	~QTicket() { }
+	virtual ~QTicket() { }
 
 	virtual void  service(int) = 0;
 
