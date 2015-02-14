@@ -34,4 +34,29 @@ void BlockingTicketDeque::pushBack(QTicket *qt){
 
 void BlockingTicketDeque::popFrontAndService(int deskNumber){
 
+	// Create an unique lock with mMutex
+	std::unique_lock<std::mutex> lock = std::unique_lock<std::mutex>(mMutex);
+
+	// While theDeque is empty
+	while (theDeque.empty())
+	{
+		// Wait mTakeConditionVariable with takeLock
+		mTakeConditionVariable.wait(lock);
+	}
+
+	// Get the first element int theDeque
+	QTicket qTicket = theDeque.front();
+
+	// Remove the first element i theDeque
+	theDeque.pop_front();
+
+	// Unlock lock
+	lock.unlock();
+
+	// Notify one thread waiting with mPutConditionVariable
+	mPutConditionVariable.notify_one();
+
+	// Call qTickets service function
+	qTicket.service(deskNumber);
+
 }
