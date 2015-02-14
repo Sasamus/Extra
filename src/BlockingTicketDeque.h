@@ -7,6 +7,8 @@
 #define BLOCKINGTICKETDEQUE_H
 
 #include <deque>
+#include <mutex>
+#include <condition_variable>
 #include "QTicket.h"
 
 using std::deque;
@@ -25,6 +27,13 @@ public:
 private:
 	deque<QTicket*> theDeque;
 	int maxSz;
+
+	//Mutex to lock the critical sections
+	std::mutex mMutex;
+
+	//Condition variable's to lock the critical sections
+	std::condition_variable mPutConditionVariable;
+	std::condition_variable mTakeConditionVariable;
 };
 
 
