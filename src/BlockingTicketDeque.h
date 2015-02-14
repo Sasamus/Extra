@@ -24,7 +24,7 @@ public:
 
 private:
 	deque<QTicket*> theDeque;
-	const int maxSz;
+	int maxSz;
 };
 
 
